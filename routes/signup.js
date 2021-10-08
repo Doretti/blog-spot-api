@@ -13,6 +13,12 @@ router.post('/signup', async (req, res) => {
       password
     } = req.body
   
+    if (!username || !email || !password) {
+      return res.json({
+        message: 'Not enough data'
+      })
+    }
+
     const encpwd = bcrypt.hashSync(password, 10)
   
     const user = await User.create({

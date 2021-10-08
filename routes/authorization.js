@@ -18,9 +18,15 @@ router.post('/auth', async (req, res) => {
       email
     },
     raw: true
-  }))[0]
+  }))
 
-  const pwdEq = bcrypt.compareSync(password, user.password)
+  if (user.length) {
+    res.json({
+      mesage: 'User not found'
+    }).status(400)
+  }
+
+  const pwdEq = bcrypt.compareSync(password, user[0].password)
 
   if (!pwdEq) {
     return res.json({
@@ -28,7 +34,7 @@ router.post('/auth', async (req, res) => {
     }).status(400)
   }
 
-  payload = { "userId": user.id }
+  payload = { "userId": user[0].id }
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: 60 * 60 })
 

@@ -13,6 +13,11 @@ const Post = sequelize.define('posts', {
   title: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  views: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 }, {
   freezeTableName: false
