@@ -14,9 +14,7 @@ router.post('/auth', async (req, res) => {
     } = req.body
 
     if (!username || !email || !password) {
-      res.json({
-        error: 'Not enough data'
-      }).status(400)
+      throw new Error('Not enough data')
     }
   
     const user = (await User.findAll({
@@ -47,8 +45,7 @@ router.post('/auth', async (req, res) => {
       token
     })
   } catch (error) {
-    console.log(error);
-    res.json(error).status(400)
+    res.status(400).json(error)
   }
 })
 
