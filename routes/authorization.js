@@ -42,7 +42,8 @@ router.post('/auth', async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: 60 * 60 })
   
     res.json({
-      token
+      token,
+      ...user
     })
   } catch (error) {
     res.status(400).json(error)
