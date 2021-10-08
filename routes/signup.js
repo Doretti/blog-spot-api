@@ -12,6 +12,8 @@ router.post('/signup', async (req, res) => {
       email,
       password
     } = req.body
+
+    console.log(req);
   
     if (!username || !email || !password) {
       return res.json({
