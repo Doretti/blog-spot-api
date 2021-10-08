@@ -14,7 +14,7 @@ router.post('/auth', async (req, res) => {
     } = req.body
 
     if (!username || !email || !password) {
-      throw new Error('Not enough data')
+      throw new Error()
     }
   
     const user = (await User.findAll({
@@ -26,15 +26,13 @@ router.post('/auth', async (req, res) => {
     }))
   
     if (!user.length) {
-      res.json({mesage: 'User not found'}).status(400)
+      throw new Error()
     }
   
     const pwdEq = bcrypt.compareSync(password, user[0].password)
   
     if (!pwdEq) {
-      return res.json({
-        data: 'Password not correct'
-      }).status(400)
+      throw new Error()
     }
   
     payload = { "userId": user[0].id }
