@@ -14,7 +14,6 @@ app.use(fileUpload({
   createParentPath: true
 }));
 
-app.use(cors());
 app.use(morgan('dev'));
 app.use('/static', express.static(__dirname + '/public'))
 app.use(express.json())
