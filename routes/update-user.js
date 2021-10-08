@@ -25,7 +25,7 @@ router.post('/users/:id', async (req, res) => {
       }
     })
     .success(result => res.json({...result}))
-    .error(err => res.json({...err}))
+    .error(err => res.status(400).send({...err}))
 
     return res.json({
       ...user

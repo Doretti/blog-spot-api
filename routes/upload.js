@@ -6,7 +6,7 @@ require('dotenv').config()
 
 router.post('/upload', async (req, res) => {
   try {
-
+    console.log(req.files);
     if (!req.files) {
       res.send({
         status: false,

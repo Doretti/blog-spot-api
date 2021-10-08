@@ -5,7 +5,7 @@ const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-router.post('/auth', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const {
       username,
@@ -13,9 +13,7 @@ router.post('/auth', async (req, res) => {
       password
     } = req.body
 
-    if (!username || !email || !password) {
-      throw new Error()
-    }
+    if (!username || !email || !password) return res.status(400).send({error: 'Not enough data'})
   
     const user = (await User.findAll({
       where: {
@@ -26,7 +24,7 @@ router.post('/auth', async (req, res) => {
     }))
   
     if (!user.length) {
-      throw new Error()
+      res.status(404).send({error: 'User not found'})
     }
   
     const pwdEq = bcrypt.compareSync(password, user[0].password)
@@ -41,10 +39,12 @@ router.post('/auth', async (req, res) => {
   
     res.json({
       token,
-      ...user
+      ...user[0]
     })
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).send({
+      ...error
+    })
   }
 })
 

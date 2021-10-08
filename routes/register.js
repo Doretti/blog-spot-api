@@ -5,19 +5,15 @@ const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-router.post('/signup', async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const {
       username,
       email,
       password
     } = req.body
-
-    console.log(req);
   
-    if (!username || !email || !password) {
-      throw new Error()
-    }
+    if (!username || !email || !password) return res.status(400).send({error: 'Not enough data'})
 
     const encpwd = bcrypt.hashSync(password, 10)
   

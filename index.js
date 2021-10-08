@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const morgan = require('morgan');
 const _ = require('lodash');
+const bodyParser = require('body-parser');
 require('./models/index')
 require('dotenv').config()
 

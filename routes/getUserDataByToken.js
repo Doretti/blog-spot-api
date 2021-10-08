@@ -1,10 +1,12 @@
 const express = require('express')
 const User = require('../models/user.model')
 const router = express.Router()
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 router.get('/users', async (req, res) => {
   try {
+    console.log(jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET));
     const tokenInfo = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
     console.log(tokenInfo);
 
@@ -12,10 +14,10 @@ router.get('/users', async (req, res) => {
       raw: true
     })
 
-    if (!user.email) {
-      return res.json({
-        message: 'User not found'
-      }).status(400)
+    if (!user?.email) {
+      res.status(400).send({
+        error: 'User not found'
+      })
     }
 
     return res.json({
@@ -23,7 +25,9 @@ router.get('/users', async (req, res) => {
     })
 
   } catch (error) {
-    return res.json(error).status(400)
+    return res.status(400).send({
+      error: error
+    })
   }
 
 })
