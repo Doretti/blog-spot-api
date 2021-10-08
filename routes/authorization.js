@@ -14,7 +14,9 @@ router.post('/auth', async (req, res) => {
     } = req.body
 
     if (!username || !email || !password) {
-      res.status(400)
+      res.json({
+        error: 'Not enough data'
+      }).status(400)
     }
   
     const user = (await User.findAll({
