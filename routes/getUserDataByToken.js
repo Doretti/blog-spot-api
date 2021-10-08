@@ -6,6 +6,7 @@ require('dotenv').config()
 router.get('/users', async (req, res) => {
   try {
     const tokenInfo = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
+    console.log(tokenInfo);
 
     const user = await User.findByPk(tokenInfo.userId, {
       raw: true
