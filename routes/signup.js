@@ -16,9 +16,7 @@ router.post('/signup', async (req, res) => {
     console.log(req);
   
     if (!username || !email || !password) {
-      return res.json({
-        message: 'Not enough data'
-      })
+      throw new Error()
     }
 
     const encpwd = bcrypt.hashSync(password, 10)

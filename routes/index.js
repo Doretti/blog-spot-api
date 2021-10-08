@@ -6,6 +6,7 @@ const updateDataUser = require('./updateDataUser')
 const getUserData = require('./getUserData')
 const getPostsByPage = require('./getPostsByPage')
 const createPost = require('./createPost')
+const getUserDataByToken = require('./getUserDataByToken')
 
 const router = express.Router()
 router.use(signup)
@@ -15,5 +16,6 @@ router.use(updateDataUser)
 router.use(getUserData)
 router.use(getPostsByPage)
 router.use(createPost)
+router.use(getUserDataByToken)
 
 module.exports = router
