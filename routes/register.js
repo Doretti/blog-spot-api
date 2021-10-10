@@ -49,6 +49,8 @@ router.post('/register', async (req, res) => {
 
     const user = await hasuraCommit(createUser(username, encpwd, email))
 
+    console.log(user);
+
     return res.json({
       username: user.data.insert_users_one.username,
       email: user.data.insert_users_one.email,
