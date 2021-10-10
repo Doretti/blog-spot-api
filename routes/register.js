@@ -32,13 +32,13 @@ mutation MyMutation {
 `
 
 router.post('/register', async (req, res) => {
+  console.log(req.body.input);
   const {
     username,
     email,
     password
   } = req.body.input
 
-  console.log(req.body.input);
 
   const encpwd = bcj.hashSync(password, 10)
 
