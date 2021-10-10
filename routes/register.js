@@ -4,6 +4,7 @@ import bcj from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import nodeFetch from 'node-fetch'
 import dotenv from 'dotenv'
+import validator from 'validator'
 dotenv.config()
 
 const hasuraCommit = async (query) => await (await nodeFetch('https://blog-spo.hasura.app/v1/graphql', {
@@ -32,28 +33,31 @@ mutation MyMutation {
 `
 
 router.post('/register', async (req, res) => {
-  console.log(req.body.input);
   const {
     username,
     email,
     password
   } = req.body.input
 
+  if (!validator.isEmail(email)) {
+    return res.send({
+      response: 'Email is not correct'
+    })
+  }
 
   const encpwd = bcj.hashSync(password, 10)
 
-  const user = await hasuraCommit(createUser(username, encpwd, email))
-
-  payload = { "userId": user.data.insert_users_one.id }
+  const user = (await hasuraCommit(createUser(username, encpwd, email))).data.insert_users_one
+  
+  const payload = { "userId": user.id }
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: 60 * 60 })
 
-  console.log(user);
-
   return res.json({
-    username: user.data.insert_users_one.username,
-    email: user.data.insert_users_one.email,
-    token
+    username: user.username,
+    email: user.email,
+    token,
+    response: 'OK'
   })
 })
 
