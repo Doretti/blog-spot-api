@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
     password
   } = req.body.input
 
-  console.log(username, email, password);
+  console.log(req.body.input);
 
   const encpwd = bcj.hashSync(password, 10)
 
