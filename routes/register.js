@@ -61,8 +61,9 @@ router.post('/register', async (req, res) => {
       response: 'OK'
     })
   } catch (error) {
-    res.send({
-      response: JSON.stringify(error)
+    console.log(error);
+    return res.json({
+      response: error
     })
   }
 })
