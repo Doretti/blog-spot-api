@@ -33,32 +33,38 @@ mutation MyMutation {
 `
 
 router.post('/register', async (req, res) => {
-  const {
-    username,
-    email,
-    password
-  } = req.body.input
-
-  if (!validator.isEmail(email)) {
-    return res.send({
-      response: 'Email is not correct'
+  try {
+    const {
+      username,
+      email,
+      password
+    } = req.body.input
+  
+    if (!validator.isEmail(email)) {
+      return res.send({
+        response: 'Email is not correct'
+      })
+    }
+  
+    const encpwd = bcj.hashSync(password, 10)
+  
+    const user = (await hasuraCommit(createUser(username, encpwd, email))).data.insert_users_one
+    
+    const payload = { "userId": user.id }
+  
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: 60 * 60 })
+  
+    return res.json({
+      username: user.username,
+      email: user.email,
+      token,
+      response: 'OK'
+    })
+  } catch (error) {
+    res.send({
+      response: JSON.stringify(error)
     })
   }
-
-  const encpwd = bcj.hashSync(password, 10)
-
-  const user = (await hasuraCommit(createUser(username, encpwd, email))).data.insert_users_one
-  
-  const payload = { "userId": user.id }
-
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: 60 * 60 })
-
-  return res.json({
-    username: user.username,
-    email: user.email,
-    token,
-    response: 'OK'
-  })
 })
 
 export default router
