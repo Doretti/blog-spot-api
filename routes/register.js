@@ -48,15 +48,16 @@ router.post('/register', async (req, res) => {
   
     const encpwd = bcj.hashSync(password, 10)
   
-    const user = (await hasuraCommit(createUser(username, encpwd, email))).data.insert_users_one
+    const user = (await hasuraCommit(createUser(username, encpwd, email)))
+    console.log(user);
     
     const payload = { "userId": user.id }
   
     const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: 60 * 60 })
   
     return res.json({
-      username: user.username,
-      email: user.email,
+      username: user.data.insert_users_one.username,
+      email: user.data.insert_users_one.email,
       token,
       response: 'OK'
     })
