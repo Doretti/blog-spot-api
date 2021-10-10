@@ -38,8 +38,8 @@ router.post('/register', async (req, res) => {
       email,
       password
     } = req.body.input
-  
-    if (!username || !email || !password) return res.status(400).send({error: 'Not enough data'})
+
+    console.log(username, email, password);
 
     const encpwd = bcj.hashSync(password, 10)
   
