@@ -1,15 +1,14 @@
-const express = require('express')
-const router = require('./routes')
-const fileUpload = require('express-fileupload');
-const cors = require('cors');
-const morgan = require('morgan');
-require('dotenv').config()
+import express from 'express';
+import router from './routes/index.js';
+import cors from 'cors';
+import morgan from 'morgan';
+import dotenv from 'dotenv'
+dotenv.config()
 
 const app = express()
 
 app.use(cors());
 app.use(morgan('dev'));
-app.use('/static', express.static(__dirname + '/public'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use('/api', router)

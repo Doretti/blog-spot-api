@@ -1,21 +1,9 @@
-const express = require('express')
-const signup = require('./register')
-const authorization = require('./login')
-const upload = require('./upload')
-const updateUser = require('./update-user')
-const getUserData = require('./getUserData')
-const getPostsByPage = require('./getPostsByPage')
-const createPost = require('./createPost')
-const getUserDataByToken = require('./getUserDataByToken')
+import { Router } from 'express'
+import signup from './register.js'
+import authorization from './login.js'
 
-const router = express.Router()
+const router = Router()
 router.use(signup)
 router.use(authorization)
-router.use(upload)
-router.use(updateUser)
-router.use(getUserData)
-router.use(getPostsByPage)
-router.use(createPost)
-router.use(getUserDataByToken)
 
-module.exports = router
+export default router

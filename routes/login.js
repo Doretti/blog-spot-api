@@ -1,9 +1,9 @@
-const express = require('express')
-const router = express.Router()
-const bcrypt = require('bcryptjs')
-const User = require('../models/user.model')
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
+import { Router } from 'express'
+const router = Router()
+import bcj from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
 
 router.post('/login', async (req, res) => {
   try {
@@ -15,19 +15,11 @@ router.post('/login', async (req, res) => {
 
     if (!username || !email || !password) return res.status(400).send({error: 'Not enough data'})
   
-    const user = (await User.findAll({
-      where: {
-        username,
-        email
-      },
-      raw: true
-    }))
-  
     if (!user.length) {
       res.status(404).send({error: 'User not found'})
     }
   
-    const pwdEq = bcrypt.compareSync(password, user[0].password)
+    const pwdEq = bcj.compareSync(password, user[0].password)
   
     if (!pwdEq) {
       throw new Error()
@@ -48,4 +40,4 @@ router.post('/login', async (req, res) => {
   }
 })
 
-module.exports = router
+export default router
